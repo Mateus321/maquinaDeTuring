@@ -31,6 +31,6 @@ inicial = tirar_virgula(inicial)
 
 transicoes = automato[3: (len(automato) - 4)]
 
-    
+transicoes = [palavra.replace("\n", "") for palavra in transicoes]
 
 print(transicoes)
