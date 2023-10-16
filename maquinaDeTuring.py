@@ -29,7 +29,7 @@ finais = tirar_virgula(finais)
 inicial = automato[len(automato) -3]
 inicial = tirar_virgula(inicial)
 
-transicoes = automato[3: (len(automato) - 4)]
+transicoes = automato[3: (len(automato) - 3)]
 
 transicoes = [palavra.replace("\n", "") for palavra in transicoes]
 
