@@ -40,4 +40,6 @@ for linha in transicoes:
     trans.append(transicoes)
 transicoes = trans
 
+fita = input("digite a palavra contendo o alfabeto " + alfabeto)
 
+print(fita)
