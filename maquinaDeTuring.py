@@ -33,4 +33,11 @@ transicoes = automato[3: (len(automato) - 3)]
 
 transicoes = [palavra.replace("\n", "") for palavra in transicoes]
 
-print(transicoes)
+trans = []
+
+for linha in transicoes:
+    transicoes = tirar_virgula(linha)
+    trans.append(transicoes)
+transicoes = trans
+
+
