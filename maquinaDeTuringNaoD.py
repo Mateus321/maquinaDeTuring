@@ -1,4 +1,4 @@
-class MaquinaTuringDeterministica:
+class MaquinaTuringNaoDeterministica:
     def _init_(self, nome_arquivo):
         self.estados, self.alfabeto, self.marcadores, self.naoFinais, self.finais, self.inicial, self.transicoes = self.ler_automato_de_arquivo(nome_arquivo)
         self.fita = ""
@@ -35,7 +35,6 @@ class MaquinaTuringDeterministica:
         transicoes = automato[3: (len(automato) - 3)]
         transicoes = [linha.replace("\n", "").split(',') for linha in transicoes]
 
-        # Formate as transições para separar a entrada, escrita e movimento
         formatted_transicoes = []
         for transicao in transicoes:
             estado_atual, entrada_escrita, proximo_estado, movimento = transicao
@@ -50,45 +49,35 @@ class MaquinaTuringDeterministica:
         estado_atual = self.inicial
         posicao_cabecote = 0
 
-        print(self.finais)
-        while estado_atual not in self.finais:
-            simbolo_atual = self.fita[posicao_cabecote]
-            proximo_estado = None
-            proximo_simbolo = None
-            direcao = None
+        stack = [(estado_atual, posicao_cabecote, self.fita)]
+
+        while stack:
+            estado_atual, posicao_cabecote, fita = stack.pop()
+
+            if estado_atual in self.finais:
+                return fita
+
+            simbolo_atual = fita[posicao_cabecote]
 
             for transicao in self.transicoes:
                 if int(transicao[0]) == int(estado_atual) and transicao[1] == simbolo_atual:
                     print('-----------')
-                    print(int(transicao[0]) == int(estado_atual))
-                    print(transicao[0]+ " " + estado_atual)
-                    print(transicao[1] == simbolo_atual)
-                    print(transicao[1]+ " " + simbolo_atual)
                     proximo_estado = transicao[2]
                     proximo_simbolo = transicao[3]
                     direcao = transicao[4]
-                    break
 
-            if proximo_estado is None:
-                print(estado_atual)
-                print(f"A máquina de Turing parou - transição indefinida.")
-                break
+                    nova_fita = fita[:posicao_cabecote] + proximo_simbolo + fita[posicao_cabecote + 1:]
+                    nova_posicao = posicao_cabecote + 1 if direcao == 'R' else posicao_cabecote - 1
 
-            print(self.fita)
-            self.fita = self.fita[:posicao_cabecote] + proximo_simbolo + self.fita[posicao_cabecote + 1:]
+                    stack.append((proximo_estado, nova_posicao, nova_fita))
             
-            if direcao == 'R':
-                posicao_cabecote += 1
-            elif direcao == 'L':
-                posicao_cabecote -= 1
-
-            estado_atual = proximo_estado
-
-        return self.fita
+            print(estado_atual + ": " + self.fita)
+            
+        return "A Máquina de Turing não aceita a entrada."
 
 # Exemplo de uso:
-nome_arquivo = 'MT-deterministica.txt'
-maquina_turing = MaquinaTuringDeterministica(nome_arquivo)
+nome_arquivo = 'MT-nao-deterministica.txt'
+maquina_turing = MaquinaTuringNaoDeterministica(nome_arquivo)
 fita = input("Digite a palavra contendo o alfabeto " + ', '.join(maquina_turing.alfabeto) + ": ")
-resultado = maquina_turing.iniciar(fita+'_')
-print("Resultado da Máquina de Turing:", resultado)
+resultado = maquina_turing.iniciar(fita + '_')
+print("Resultado da Máquina de Turing:", resultado)1
