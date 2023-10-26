@@ -49,12 +49,14 @@ class MaquinaTuringNaoDeterministica:
         estado_atual = self.inicial
         posicao_cabecote = 0
 
+        # Create a stack to manage branches of computation
         stack = [(estado_atual, posicao_cabecote, self.fita)]
 
         while stack:
             estado_atual, posicao_cabecote, fita = stack.pop()
 
             if estado_atual in self.finais:
+                # If a branch reaches a final state, the input is accepted
                 return fita
 
             simbolo_atual = fita[posicao_cabecote]
@@ -66,9 +68,11 @@ class MaquinaTuringNaoDeterministica:
                     proximo_simbolo = transicao[3]
                     direcao = transicao[4]
 
+                    # Clone the current configuration and update it with the transition
                     nova_fita = fita[:posicao_cabecote] + proximo_simbolo + fita[posicao_cabecote + 1:]
                     nova_posicao = posicao_cabecote + 1 if direcao == 'R' else posicao_cabecote - 1
 
+                    # Push the new configuration onto the stack
                     stack.append((proximo_estado, nova_posicao, nova_fita))
             
             print(estado_atual + ": " + self.fita)
@@ -80,4 +84,4 @@ nome_arquivo = 'MT-nao-deterministica.txt'
 maquina_turing = MaquinaTuringNaoDeterministica(nome_arquivo)
 fita = input("Digite a palavra contendo o alfabeto " + ', '.join(maquina_turing.alfabeto) + ": ")
 resultado = maquina_turing.iniciar(fita + '_')
-print("Resultado da Máquina de Turing:", resultado)1
+print("Resultado da Máquina de Turing:", resultado)
